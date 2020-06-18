@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://objects/sword/sword.glb" type="PackedScene" id=1]
+[ext_resource path="res://Weapon_Item.gd" type="Script" id=2]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.2, 2.5, 0.2 )
+
+[node name="sword" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="Cube" parent="." index="0"]
+transform = Transform( 1.49012e-08, -6.77626e-21, 0.25, 0.043412, 1.96962, -3.72529e-09, -0.246202, 0.347296, 1.49012e-08, 0, 0, 0 )
+
+[node name="Hitbox" type="Area" parent="Cube" index="0"]
+transform = Transform( 2.45147e-07, 0.694593, -3.93923, 2.16227e-09, 0.492404, 0.0868241, 4, -4.1401e-08, 2.34796e-07, 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Cube/Hitbox" index="0"]
+transform = Transform( 1, 0, 0, 0, 0.984808, -0.173648, 0, 0.173648, 0.984808, 0, 2.5, 0.433482 )
+shape = SubResource( 1 )
+
+[node name="AnimationPlayer" parent="." index="1"]
+playback_speed = 4.0
+[connection signal="body_entered" from="Cube/Hitbox" to="." method="_on_Hitbox_body_entered"]

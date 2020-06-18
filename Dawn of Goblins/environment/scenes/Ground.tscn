@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://materials/DefaultMaterial.tres" type="Material" id=2]
+
+
+[sub_resource type="ArrayMesh" id=1]
+resource_name = "Plane"
+surfaces/0 = {
+"aabb": AABB( -10, 0, -10, 20, 1e-05, 20 ),
+"array_data": PoolByteArray( 0, 0, 32, 65, 0, 0, 0, 0, 0, 0, 32, 65, 0, 127, 0, 0, 0, 0, 129, 127, 93, 33, 51, 56, 0, 0, 32, 193, 0, 0, 0, 0, 0, 0, 32, 193, 0, 127, 0, 0, 0, 0, 129, 127, 43, 47, 199, 54, 0, 0, 32, 65, 0, 0, 0, 0, 0, 0, 32, 193, 0, 127, 0, 0, 0, 0, 129, 127, 43, 47, 51, 56, 0, 0, 32, 65, 0, 0, 0, 0, 0, 0, 32, 65, 0, 127, 0, 0, 0, 0, 129, 127, 93, 33, 51, 56, 0, 0, 32, 193, 0, 0, 0, 0, 0, 0, 32, 65, 0, 127, 0, 0, 0, 0, 129, 127, 93, 33, 199, 54, 0, 0, 32, 193, 0, 0, 0, 0, 0, 0, 32, 193, 0, 127, 0, 0, 0, 0, 129, 127, 43, 47, 199, 54 ),
+"array_index_data": PoolByteArray(  ),
+"blend_shape_data": [  ],
+"format": 97303,
+"index_count": 0,
+"primitive": 4,
+"skeleton_aabb": [  ],
+"vertex_count": 6
+}
+
+[sub_resource type="ConcavePolygonShape" id=2]
+data = PoolVector3Array( 10, 0, 10, -10, 0, -10, 10, 0, -10, 10, 0, 10, -10, 0, 10, -10, 0, -10 )
+
+[node name="Plane" type="MeshInstance"]
+transform = Transform( 5, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 2 )
+
+[node name="StaticBody" type="StaticBody" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+shape = SubResource( 2 )

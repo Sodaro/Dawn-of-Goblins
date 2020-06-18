@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://materials/DefaultMaterial.tres" type="Material" id=1]
+[ext_resource path="res://characters/Goblin/goblin.glb" type="PackedScene" id=2]
+
+
+[node name="goblin" instance=ExtResource( 2 )]
+
+[node name="Cube" parent="." index="0"]
+material/0 = ExtResource( 1 )
