@@ -32,8 +32,15 @@ var velocity = Vector3.ZERO
 var lastDirection = Vector3.ZERO
 
 signal friendly_died
+signal death
+signal entered_combat
+signal left_combat
+
+var corpse
 
 var heldWeapon: Node
+
+var isInCombat: bool = false
 #var currentWeapon = Globals.WeaponType.None
 
 var currentStatus: int = Globals.StatusEffects.None
@@ -41,30 +48,43 @@ var currentStatus: int = Globals.StatusEffects.None
 var isAttacking : bool = false
 
 func _ready():
+	if get_signal_connection_list("death").size() == 0:
+		connect("death", self, "_on_Death")
 	if enemyClass == enemyType.Goblin:
-		enemy = load("res://Goblin.gd")
+		enemy = load("res://characters/Goblin/Goblin.gd")
 	elif enemyClass == enemyType.Human:
-		enemy = load("res://Human.gd")
+		enemy = load("res://characters/Human/Human.gd")
+		corpse = load("res://goblin_body.tscn")
 
 
 func _physics_process(delta):
-	
 	if currentStatus != Globals.StatusEffects.Stunned:
-		if enemyTargets.size() > 0 && heldWeapon:
+		if enemyTargets.size() > 0:
 			KillEnemy(delta)
+		elif isInCombat:
+			emit_signal("left_combat")
+			isInCombat = false
 		elif friendlyTarget:
 			FollowFriendly(delta)
-			
-	if is_on_floor():
-		gravity = 0
 	else:
-		gravity += gravityForce * delta
+		if is_on_floor():
+			gravity = 0
+			currentStatus = Globals.StatusEffects.None
+		else:
+			gravity += gravityForce * delta
+			velocity.y -= gravity
 		
-	velocity.x -= velocity.x * delta
-	velocity.z -= velocity.z * delta
+#	velocity.x -= velocity.x * delta
+#	velocity.z -= velocity.z * delta
 		
-	velocity.y -= gravity
-	move_and_slide(velocity, Vector3.UP, false)
+	
+	if velocity != Vector3.ZERO:
+		if $body/AnimationPlayer.current_animation != "Walk":
+			$body/AnimationPlayer.play("Walk")
+		move_and_slide(velocity, Vector3.UP, false)
+	else:
+		if $body/AnimationPlayer.current_animation != "Idle":
+			$body/AnimationPlayer.play("Idle")
 #	isAttacking = $sword/AnimationPlayer.is_playing()
 #	if isAttacking: return
 	
@@ -110,19 +130,35 @@ func FollowFriendly(delta):
 	var position: Vector3 = get_translation()
 	var targetSpeed: float = friendlyTarget.get("speed")
 	var targetVelocity = friendlyTarget.get("velocity")
+	
 
-	var targetPos: Vector3 = friendlyTarget.get_translation() - (friendlyTarget.get("lastDirection") * 4)
+	var targetPos: Vector3 = friendlyTarget.get_translation()
+	var offset = friendlyTarget.get("lastDirection") * -16
+	targetPos += offset
+	#print("pos: " + String(position) + " targetPos:" + String(targetPos))
+	
+	#targetPos = targetPos + offset
 	targetPos.y = position.y
-	var facingDirection: Vector3 = (targetPos - position).normalized()
+	#print(offset)
+
+	#var facingDirection: Vector3 = (targetPos - position).normalized()
+	
+	LookAtPosition(targetPos)
 	
 	var distance: float = position.distance_to(targetPos)
-	if distance > 4:
-		MoveTowardsFriendly(position, targetPos, targetSpeed)
-	else:
-		LookAtPosition(friendlyTarget.get_translation())
-		
-	if targetVelocity == Vector3.ZERO:
+	
+	velocity = (targetPos - position).normalized() * targetSpeed
+	#velocity = (targetPos - position).normalized() * delta * moveSpeed
+	if distance < 8 && targetVelocity == Vector3.ZERO:
 		velocity = Vector3.ZERO
+			
+		#print(velocity)
+#	else:
+#		LookAtPosition(friendlyTarget.get_translation())
+	#MoveTowardsFriendly(position, targetPos, targetVelocity)
+
+		
+
 
 
 func MoveTowardsPosition(var position, var target_position, var delta):
@@ -135,14 +171,16 @@ func MoveTowardsPosition(var position, var target_position, var delta):
 		lastDirection = facingDirection
 	LookAtPosition(target_position)
 	
-func MoveTowardsFriendly(var position, var target_position, var target_speed):
+func MoveTowardsFriendly(var position, var target_position, var targetVelocity):
 	var facingDirection: Vector3 = (target_position - position).normalized()
 	
-	velocity += facingDirection * speed
-	if target_speed != 0:
-		velocity = Globals.ClampedVector3(velocity, -target_speed, target_speed)
+	#velocity += facingDirection * target_speed
+	if targetVelocity != Vector3.ZERO:
+		velocity = facingDirection * targetVelocity.length()
 	else:
-		velocity = Globals.ClampedVector3(velocity, -speed, speed)
+		velocity += facingDirection * speed
+		
+	
 	#move_and_slide(velocity, Vector3.UP, false)
 	if facingDirection:
 		lastDirection = facingDirection
@@ -154,14 +192,23 @@ func take_damage(var amount: int, var knockback: Vector3):
 	emit_signal("health_changed", health_current)
 	if health_current <= 0:
 		emit_signal("friendly_died")
-		queue_free()
+		emit_signal("death")
 	else:
 		velocity += knockback
 
+func _on_Death():
+	var corpseInstance = corpse.instance()
+	add_child(corpseInstance)
+	corpseInstance.transform.origin = transform.origin
+	corpseInstance.rotate_x(deg2rad(90))
+	remove_child(corpseInstance)
+	
 
 func _on_AggroArea_body_entered(body: Entity):
 	if body is enemy:
 		enemyTargets.append(body)
+		isInCombat = true
+		emit_signal("entered_combat")
 
 func LookAtPosition(var position: Vector3) -> void:
 	if position == get_translation():

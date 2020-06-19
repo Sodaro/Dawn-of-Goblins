@@ -5,6 +5,7 @@ class_name Goblin
 # var a = 2
 # var b = "text"
 
+
 #const Enemy = preload("res://Enemy.gd")
 
 func _ready():

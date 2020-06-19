@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Cosmin Mirza - 04 Bygone.ogg-c9fb53300ab5e691616347b084f23404.oggstr"
+
+[deps]
+
+source_file="res://audio/Cosmin Mirza - 04 Bygone.ogg"
+dest_files=[ "res://.import/Cosmin Mirza - 04 Bygone.ogg-c9fb53300ab5e691616347b084f23404.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

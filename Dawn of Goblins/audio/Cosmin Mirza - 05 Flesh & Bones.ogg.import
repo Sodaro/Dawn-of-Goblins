@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Cosmin Mirza - 05 Flesh & Bones.ogg-d45c2f0b594fcbada15b60f56dbc9958.oggstr"
+
+[deps]
+
+source_file="res://audio/Cosmin Mirza - 05 Flesh & Bones.ogg"
+dest_files=[ "res://.import/Cosmin Mirza - 05 Flesh & Bones.ogg-d45c2f0b594fcbada15b60f56dbc9958.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -2,10 +2,9 @@ extends KinematicBody
 
 class_name Player
 
-var speed : float = 10.0
+var speed : float = 30.0
 var velocity: Vector3
 
-var facingDirection = Vector3.ZERO
 var lastDirection = Vector3.ZERO
 
 var goblins: Array = []
@@ -38,8 +37,14 @@ func _process(delta):
 	
 	
 	velocity = moveDirection.rotated(Vector3.UP, rotation.y) * speed
+	lastDirection = velocity.normalized()
 	if velocity != Vector3.ZERO:
 		move_and_slide(velocity, Vector3.UP, false)
+		if $goblin/AnimationPlayer.current_animation != "Walk":
+			$goblin/AnimationPlayer.play("Walk")
+	else:
+		if $goblin/AnimationPlayer.current_animation != "Idle":
+			$goblin/AnimationPlayer.play("Idle")
 	
 
 	
@@ -51,10 +56,9 @@ func _physics_process(delta):
 	var result = space_state.intersect_ray(from, to, [self])
 	if result:
 		var lookPos = Vector3(result.position.x, get_translation().y, result.position.z)
-		facingDirection = lookPos.normalized()
+		var facingDirection = lookPos.normalized()
 		LookAtPosition(lookPos)
-		if (facingDirection):
-			lastDirection = facingDirection
+			
 
 
 func AddGoblin(var goblin):

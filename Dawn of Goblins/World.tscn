@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://environment/scenes/ground.tscn" type="PackedScene" id=1]
 [ext_resource path="res://characters/Player/Player.tscn" type="PackedScene" id=2]
@@ -9,9 +9,12 @@
 [ext_resource path="res://environment/scenes/fort/gate.tscn" type="PackedScene" id=7]
 [ext_resource path="res://objects/tent/Tent.tscn" type="PackedScene" id=8]
 [ext_resource path="res://objects/gamemanager/GameManager.tscn" type="PackedScene" id=9]
+[ext_resource path="res://characters/Goblin/Goblin.tscn" type="PackedScene" id=10]
+[ext_resource path="res://campfire.tscn" type="PackedScene" id=11]
+[ext_resource path="res://characters/Human/Human.tscn" type="PackedScene" id=12]
 
 [sub_resource type="ProceduralSky" id=1]
-sky_top_color = Color( 0.52549, 0.933333, 0.952941, 1 )
+sky_top_color = Color( 0.458824, 0.372549, 0.313726, 1 )
 sky_horizon_color = Color( 0.854902, 0.658824, 0.282353, 1 )
 ground_horizon_color = Color( 0.647059, 0.443137, 0.0470588, 1 )
 sun_color = Color( 0.956863, 0.745098, 0.243137, 1 )
@@ -132,31 +135,31 @@ transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -138, 0
 [node name="wall4" parent="Fort/wall" instance=ExtResource( 6 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -192, 0, -24 )
 
-[node name="wall" type="StaticBody" parent="Fort/wall/wall4" instance=ExtResource( 6 )]
+[node name="wall" parent="Fort/wall/wall4" instance=ExtResource( 6 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -30, 0, -24 )
 
-[node name="wall2" type="StaticBody" parent="Fort/wall/wall4" instance=ExtResource( 6 )]
+[node name="wall2" parent="Fort/wall/wall4" instance=ExtResource( 6 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -83, 0, -24 )
 
-[node name="gate" type="StaticBody" parent="Fort/wall/wall4/wall2" instance=ExtResource( 7 )]
+[node name="gate" parent="Fort/wall/wall4/wall2" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 54 )
 
-[node name="wall" type="StaticBody" parent="Fort/wall/wall4/wall2/gate" instance=ExtResource( 6 )]
+[node name="wall" parent="Fort/wall/wall4/wall2/gate" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 53.4 )
 
-[node name="wall2" type="StaticBody" parent="Fort/wall/wall4/wall2/gate" instance=ExtResource( 6 )]
+[node name="wall2" parent="Fort/wall/wall4/wall2/gate" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 106.8 )
 
-[node name="wall" type="StaticBody" parent="Fort/wall/wall4/wall2/gate/wall2" instance=ExtResource( 6 )]
+[node name="wall" parent="Fort/wall/wall4/wall2/gate/wall2" instance=ExtResource( 6 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 30, 0, 26.4825 )
 
-[node name="wall2" type="StaticBody" parent="Fort/wall/wall4/wall2/gate/wall2" instance=ExtResource( 6 )]
+[node name="wall2" parent="Fort/wall/wall4/wall2/gate/wall2" instance=ExtResource( 6 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 84, 0, 26.4825 )
 
-[node name="wall3" type="StaticBody" parent="Fort/wall/wall4/wall2/gate/wall2" instance=ExtResource( 6 )]
+[node name="wall3" parent="Fort/wall/wall4/wall2/gate/wall2" instance=ExtResource( 6 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 138, 0, 26.4825 )
 
-[node name="wall4" type="StaticBody" parent="Fort/wall/wall4/wall2/gate/wall2" instance=ExtResource( 6 )]
+[node name="wall4" parent="Fort/wall/wall4/wall2/gate/wall2" instance=ExtResource( 6 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 192, 0, 26.4825 )
 
 [node name="wall2" parent="Fort" instance=ExtResource( 6 )]
@@ -185,3 +188,45 @@ transform = Transform( -0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819,
 
 [node name="tent5" parent="Fort" instance=ExtResource( 8 )]
 transform = Transform( -0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, -0.258819, -145.783, 0, 90.6832 )
+
+[node name="Goblin" parent="." instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 57.5712, 0, -73.5086 )
+
+[node name="campfire" parent="." instance=ExtResource( 11 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 40.479, 0.0413389, -474.279 )
+
+[node name="Human8" parent="." instance=ExtResource( 12 )]
+transform = Transform( 0.137211, -0.0233739, 0.990266, -0.0523392, 0.998154, 0.0308122, -0.989158, -0.0560575, 0.135734, -3.92024, 3.40197, -515.415 )
+
+[node name="Human9" parent="." instance=ExtResource( 12 )]
+transform = Transform( 0.137211, -0.0233739, 0.990266, -0.0523392, 0.998154, 0.0308122, -0.989158, -0.0560575, 0.135734, -5.9784, 4.18706, -500.577 )
+
+[node name="Human10" parent="." instance=ExtResource( 12 )]
+transform = Transform( 0.137211, -0.0233739, 0.990266, -0.0523392, 0.998154, 0.0308122, -0.989158, -0.0560575, 0.135734, -8.03656, 3.97215, -485.74 )
+
+[node name="Human11" parent="." instance=ExtResource( 12 )]
+transform = Transform( 0.137211, -0.0233739, 0.990266, -0.0523392, 0.998154, 0.0308122, -0.989158, -0.0560575, 0.135734, -10.0947, 3.75724, -470.903 )
+
+[node name="Human12" parent="." instance=ExtResource( 12 )]
+transform = Transform( 0.137211, -0.0233739, 0.990266, -0.0523392, 0.998154, 0.0308122, -0.989158, -0.0560575, 0.135734, -12.1529, 4.54232, -456.065 )
+
+[node name="Human" parent="." instance=ExtResource( 12 )]
+transform = Transform( 0.137211, -0.0233739, 0.990266, -0.0523392, 0.998154, 0.0308122, -0.989158, -0.0560575, 0.135734, -1.86208, 2.61689, -530.252 )
+
+[node name="Human3" parent="." instance=ExtResource( 12 )]
+transform = Transform( 0.137211, -0.0233739, 0.990266, -0.0523392, 0.998154, 0.0308122, -0.989158, -0.0560575, 0.135734, 12.2018, 3.40197, -515.415 )
+
+[node name="Human4" parent="." instance=ExtResource( 12 )]
+transform = Transform( 0.137211, -0.0233739, 0.990266, -0.0523392, 0.998154, 0.0308122, -0.989158, -0.0560575, 0.135734, 10.1436, 3.18706, -500.577 )
+
+[node name="Human5" parent="." instance=ExtResource( 12 )]
+transform = Transform( 0.137211, -0.0233739, 0.990266, -0.0523392, 0.998154, 0.0308122, -0.989158, -0.0560575, 0.135734, 8.08546, 3.97215, -485.74 )
+
+[node name="Human6" parent="." instance=ExtResource( 12 )]
+transform = Transform( 0.137211, -0.0233739, 0.990266, -0.0523392, 0.998154, 0.0308122, -0.989158, -0.0560575, 0.135734, 6.0273, 3.75724, -470.903 )
+
+[node name="Human7" parent="." instance=ExtResource( 12 )]
+transform = Transform( 0.137211, -0.0233739, 0.990266, -0.0523392, 0.998154, 0.0308122, -0.989158, -0.0560575, 0.135734, 3.96914, 4.54232, -456.065 )
+
+[node name="Human2" parent="." instance=ExtResource( 12 )]
+transform = Transform( 0.137211, -0.0233739, 0.990266, -0.0523392, 0.998154, 0.0308122, -0.989158, -0.0560575, 0.135734, 14.2599, 2.61689, -530.252 )
