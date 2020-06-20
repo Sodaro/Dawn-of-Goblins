@@ -10,6 +10,7 @@ class_name Goblin
 
 func _ready():
 	._ready()
+	isCaptured = true
 	#$sword/AnimationPlayer.playback_speed = attackSpeed
 
 

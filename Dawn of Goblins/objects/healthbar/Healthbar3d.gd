@@ -22,5 +22,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
 func _on_Health_Changed(var new_value):
+	if visible == false:
+		visible = true
 	health_current = new_value
 	$Fill.set_scale(Vector3(float(health_current/health_max * initial_scale.x), initial_scale.y, initial_scale.z))

@@ -27,6 +27,7 @@ radius = 2.0
 script = ExtResource( 2 )
 
 [node name="RigidBody" type="RigidBody" parent="."]
+mode = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="RigidBody"]
 transform = Transform( 1, 0, 0, 0, 0.173648, 0.984808, 0, -0.984808, 0.173648, 0.00901932, 2.41765, 0.414901 )

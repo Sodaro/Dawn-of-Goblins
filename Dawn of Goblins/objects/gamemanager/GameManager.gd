@@ -40,7 +40,7 @@ func _on_Check_Win():
 		
 func _on_Goblin_Entered_Combat(goblin):
 	goblinsInCombat.append(goblin)
-	print("goblin entered combat")
+	print(goblin.name + " entered combat")
 	if $MusicPlayer.stream != battleMusic:
 		$MusicPlayer.stop()
 		$MusicPlayer.stream = battleMusic

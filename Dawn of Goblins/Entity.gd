@@ -1,10 +1,5 @@
 extends KinematicBody
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 class_name Entity
 
 enum enemyType {Goblin, Human}
@@ -21,6 +16,7 @@ export(float) var gravityForce = 5
 
 export(float) var speed = 5.0
 export(float) var attackSpeed = 4
+
 
 export(int) var health_max = 10
 var health_current:float = health_max
@@ -41,6 +37,8 @@ var corpse
 var heldWeapon: Node
 
 var isInCombat: bool = false
+var isCaptured: bool = false
+
 #var currentWeapon = Globals.WeaponType.None
 
 var currentStatus: int = Globals.StatusEffects.None
@@ -52,30 +50,42 @@ func _ready():
 		connect("death", self, "_on_Death")
 	if enemyClass == enemyType.Goblin:
 		enemy = load("res://characters/Goblin/Goblin.gd")
+		corpse = load("res://characters/Human/Human_Corpse.tscn")
 	elif enemyClass == enemyType.Human:
 		enemy = load("res://characters/Human/Human.gd")
-		corpse = load("res://goblin_body.tscn")
+		corpse = load("res://characters/Goblin/Goblin_Corpse.tscn")
 
 
 func _physics_process(delta):
 	if currentStatus != Globals.StatusEffects.Stunned:
-		if enemyTargets.size() > 0:
-			KillEnemy(delta)
-		elif isInCombat:
-			emit_signal("left_combat")
-			isInCombat = false
-		elif friendlyTarget:
-			FollowFriendly(delta)
+		if !isCaptured:
+			if HasThreats():
+				if !isInCombat:
+					emit_signal("entered_combat")
+					isInCombat = true
+				if heldWeapon:
+					KillEnemy(delta)
+			elif isInCombat:
+				emit_signal("left_combat")
+				isInCombat = false
+			elif friendlyTarget:
+				FollowFriendly(delta)
+		elif isCaptured:
+			if !HasThreats() && friendlyTarget:
+				isCaptured = false
 	else:
-		if is_on_floor():
-			gravity = 0
-			currentStatus = Globals.StatusEffects.None
-		else:
-			gravity += gravityForce * delta
-			velocity.y -= gravity
+		velocity.x *= 0.9
+		velocity.z *= 0.9
+			
+	if is_on_floor():
+		gravity = 0
+		currentStatus = Globals.StatusEffects.None
+	else:
+		gravity += gravityForce * delta
+		velocity.y -= gravity
+
 		
-#	velocity.x -= velocity.x * delta
-#	velocity.z -= velocity.z * delta
+
 		
 	
 	if velocity != Vector3.ZERO:
@@ -90,6 +100,15 @@ func _physics_process(delta):
 	
 	#if !enemyTargets.empty() && hasWeapon:
 
+func HasThreats() -> bool:
+	if enemyTargets.size() > 0:
+		for entity in enemyTargets:
+			var wr = weakref(entity)
+			if !wr.get_ref():
+				enemyTargets.erase(entity)
+			elif entity.heldWeapon:
+				return true
+	return false
 
 
 func PickUpWeapon(var weapon):
@@ -157,7 +176,7 @@ func FollowFriendly(delta):
 #		LookAtPosition(friendlyTarget.get_translation())
 	#MoveTowardsFriendly(position, targetPos, targetVelocity)
 
-		
+		 #enemy not a prisoner and self not prisoner
 
 
 
@@ -198,17 +217,18 @@ func take_damage(var amount: int, var knockback: Vector3):
 
 func _on_Death():
 	var corpseInstance = corpse.instance()
-	add_child(corpseInstance)
+	get_parent().add_child(corpseInstance)
 	corpseInstance.transform.origin = transform.origin
-	corpseInstance.rotate_x(deg2rad(90))
-	remove_child(corpseInstance)
+	corpseInstance.rotate_y(deg2rad(90))
+	
+	queue_free()
 	
 
 func _on_AggroArea_body_entered(body: Entity):
 	if body is enemy:
 		enemyTargets.append(body)
-		isInCombat = true
-		emit_signal("entered_combat")
+#		isInCombat = true
+#		emit_signal("entered_combat")
 
 func LookAtPosition(var position: Vector3) -> void:
 	if position == get_translation():

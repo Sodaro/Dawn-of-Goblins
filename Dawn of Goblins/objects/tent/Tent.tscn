@@ -4,10 +4,7 @@
 [ext_resource path="res://objects/tent/Tent.gd" type="Script" id=3]
 [ext_resource path="res://objects/healthbar/HealthBar.tscn" type="PackedScene" id=4]
 
-
-
-
-[sub_resource type="ArrayMesh" id=2]
+[sub_resource type="ArrayMesh" id=1]
 resource_name = "Cube001"
 surfaces/0 = {
 "aabb": AABB( -15.6, -9.24722, -10, 31.394, 20.8364, 20 ),
@@ -21,7 +18,7 @@ surfaces/0 = {
 "vertex_count": 48
 }
 
-[sub_resource type="BoxShape" id=3]
+[sub_resource type="BoxShape" id=2]
 extents = Vector3( 16, 10, 10 )
 
 [node name="tent" type="StaticBody" groups=[
@@ -31,10 +28,11 @@ script = ExtResource( 3 )
 
 [node name="HealthBar" parent="." instance=ExtResource( 4 )]
 transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 1, 0, 13.4135, 10.1154 )
+visible = false
 
 [node name="Cube001" type="MeshInstance" parent="."]
-mesh = SubResource( 2 )
+mesh = SubResource( 1 )
 material/0 = ExtResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-shape = SubResource( 3 )
+shape = SubResource( 2 )

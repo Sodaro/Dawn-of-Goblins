@@ -53,7 +53,7 @@ func _physics_process(delta):
 	var space_state = get_world().get_direct_space_state()
 	var from = camera.project_ray_origin(mousePos)
 	var to = from + camera.project_ray_normal(mousePos) * 1000
-	var result = space_state.intersect_ray(from, to, [self])
+	var result = space_state.intersect_ray(from, to, [self], 1)
 	if result:
 		var lookPos = Vector3(result.position.x, get_translation().y, result.position.z)
 		var facingDirection = lookPos.normalized()

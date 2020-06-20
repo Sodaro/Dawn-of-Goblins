@@ -11,4 +11,5 @@ transform = Transform( 1, 0, 0, 0, 0.924053, 0.382264, 0, -0.382264, 0.924053, 0
 [node name="Camera" type="Camera" parent="InnerGimbal"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8 )
 fov = 90.0
-far = 300.0
+near = 0.2
+far = 500.0

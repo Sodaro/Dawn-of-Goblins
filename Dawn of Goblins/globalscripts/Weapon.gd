@@ -8,3 +8,4 @@ export(int) var damage = 5
 export(float) var knockbackForce = 25
 var excludeArray: Array = []
 
+var SwordStats = {"Damage": damage, "Force": knockbackForce}

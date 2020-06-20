@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://human_body.tscn" type="PackedScene" id=2]
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 3.0
+height = 5.0
+
+[node name="Human_Corpse" type="RigidBody"]
+input_ray_pickable = false
+collision_layer = 4
+collision_mask = 5
+mode = 2
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.791673, 0 )
+shape = SubResource( 1 )
+
+[node name="body" parent="." instance=ExtResource( 2 )]

@@ -12,11 +12,11 @@ func _on_PickupArea_body_entered(body):
 		var weaponInstance = weaponScene.instance()
 		if body is Player || body is Goblin:
 			excludeArray = [Player, Goblin]
-			weaponInstance.init(weaponType, damage, knockbackForce, excludeArray)
-		else:
+			
+		if body is Human:
 			excludeArray = [Human]
-			weaponInstance.init(weaponType, damage, knockbackForce, excludeArray)
-		
+			
+		weaponInstance.init(weaponType, damage, knockbackForce, excludeArray)
 		body.PickUpWeapon(weaponInstance)
 		queue_free()
 
